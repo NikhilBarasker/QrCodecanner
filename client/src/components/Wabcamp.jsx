@@ -17,10 +17,10 @@ export default function Wabcamp() {
     navigate("/");
   };
 
-  const handleScan = (data) => {
-    if (data) {
-      setScannedValue(data.text);
-      fetchData(data.text);
+  const handleScan = (id) => {
+    if (id) {
+      setScannedValue(id.text);
+      fetchData(id.text);
       setIsScanning(false);
     }
   };
@@ -29,11 +29,12 @@ export default function Wabcamp() {
     console.error(err);
   };
 
-  const fetchData = async (data) => {
+  const fetchData = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/fetchdata/${data}`
+        `http://localhost:3000/fetchdata/${id}`
       );
+      console.log('xxxxxxx',response)
       if (response.data) {
         setFetchedData(response.data.user); 
       }

@@ -1,0 +1,27 @@
+const mongoose = require("mongoose");
+
+const model = new mongoose.Schema({
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+  designation: {
+    type: String,
+  },
+  invigilator: {
+    type: String,
+  },
+  qrcode: {
+    type: String,
+  },
+});
+
+module.exports = mongoose.model("Contractor", model);

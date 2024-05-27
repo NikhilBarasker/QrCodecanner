@@ -2,13 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Databse/databse");
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5174", // Allow requests from this origin
+    origin: "http://localhost:5173", // Allow requests from this origin
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Specify allowed HTTP methods
     credentials: true,
   })
@@ -22,5 +22,6 @@ const routes = require("./Routes/routes");
 app.use("/", routes);
 
 app.listen(PORT, () => {
+
   console.log(`Server is running on port ${PORT}`);
 });

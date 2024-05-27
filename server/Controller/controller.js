@@ -1,4 +1,5 @@
 const Info = require("../Schema/UserInfo");
+const Contractor = require("../Schema/Contractor")
 const bcrypt = require("bcryptjs");
 
 const loginUser = async (req, res) => {
@@ -7,7 +8,6 @@ const loginUser = async (req, res) => {
   console.log("backend Call", email," ", password);
   try {
     const user = await Info.findOne({ email });
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -121,9 +121,10 @@ const deleteUser = async (req, res) => {
 
 const fetchDataByQRCode = async (req, res) => {
   const { qrcode } = req.params;
+  console.log("QR Code:", qrcode);
 
   try {
-    const user = await Info.findOne({ qrcode });
+    const user = await Contractor.findOne({ qrcode });
 
     if (user) {
       const userData = {
@@ -141,9 +142,11 @@ const fetchDataByQRCode = async (req, res) => {
       res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
+    console.error("Error fetching data:", error);
     res.status(500).json({ message: "Internal server error", error });
   }
 };
+
 
 module.exports = {
   verifyUser,
