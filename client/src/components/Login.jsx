@@ -1,8 +1,7 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import Logo from '../assets/Logo.png'
-import {useNavigate} from 'react-router-dom'
+import Logo from '../assets/Logo.png';
+import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 
 function Login() {
@@ -13,60 +12,44 @@ function Login() {
 
   let navigate = useNavigate();
 
-  // const handleClick = () => {
-  //   console.log("xxxxxxxxxx", formData);
-  //   handleSubmit()
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-
-    // try {
-    //   console.log("sssss", formData);
-
-    //   // Sending data in the body of a GET request using Axios
-    //   const response = await axios.get("http://localhost:3000/login", {
-    //     params: formData,
-    //   });
-    //   // console.log('ddddddddddd',response.data.user)
-    //   localStorage.setItem("user", JSON.stringify(response.data.user));
-      navigate('/wabcamp')
-    // } catch (error) {
-    //   alert(`One among email or password is invalid`)
-    //   console.error("Error:", error);
-    // }
+    e.preventDefault(); 
+    console.log(formData)
+    try {
+      const response = await axios.post("http://localhost:3000/invigilatorlogin",formData);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      navigate("/wabcamp");
+    } catch (error) {
+      alert("One among email or password is invalid");
+      console.error("Error:", error);
+    }
   };
 
-
   return (
-    <div class="bg-gray-50 font-[sans-serif] text-[#333]">
-      <div class="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-        <div class="max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white">
+    <div className="bg-gray-50 font-[sans-serif] text-[#333]">
+      <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
+        <div className="max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white">
           <a href="javascript:void(0)">
-            <img
-              src={Logo}
-              alt="logo"
-              className="w-[80px] mb-10 mx-auto"
-            />
+            <img src={Logo} alt="logo" className="w-[80px] mb-10 mx-auto" />
           </a>
-          <h2 class="text-center text-3xl font-extrabold">
+          <h2 className="text-center text-3xl font-extrabold">
             Log in to your account
           </h2>
-          <form class="mt-10 space-y-4">
+          <form className="mt-10 space-y-4" onSubmit={handleSubmit}>
             <div>
               <input
                 type="text"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                autocomplete="email"
+                autoComplete="email"
                 required
-                class="w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500"
+                className="w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500"
                 placeholder="Email address"
               />
             </div>
@@ -76,40 +59,17 @@ function Login() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                autocomplete="password"
+                autoComplete="password"
                 required
-                class="w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500"
+                className="w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500"
                 placeholder="Password"
               />
             </div>
-            <div class="flex items-center justify-between gap-4">
-              {/* <div class="flex items-center">
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label for="remember-me" class="ml-3 block text-sm">
-                  Remember me
-                </label>
-              </div> */}
-              {/* <div>
-                <a
-                  href="javascript:void(0);"
-                  class="text-sm text-blue-600 hover:text-blue-500"
-                >
-                  Forgot Password?
-                </a>
-              </div> */}
-            </div>
-            <div class="!mt-10">
+            <div className="flex items-center justify-between gap-4"></div>
+            <div className="!mt-10">
               <button
-                onClick={() => handleSubmit()}
-                type="button"
-                class="w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                type="submit"
+                className="w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
               >
                 Log in
               </button>

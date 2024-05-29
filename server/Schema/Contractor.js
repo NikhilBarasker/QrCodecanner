@@ -19,9 +19,15 @@ const model = new mongoose.Schema({
   invigilator: {
     type: String,
   },
+  profilePhoto: {
+    type: String,
+  },
   qrcode: {
     type: String,
   },
+  profilePic: {
+    type:String,
+  }
 });
 
 module.exports = mongoose.model("Contractor", model);

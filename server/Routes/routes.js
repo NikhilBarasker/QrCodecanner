@@ -1,20 +1,25 @@
-// routes.js
 const express = require("express");
 const router = express.Router();
 const {
-  verifyUser,
-  loginUser,
-  registerUser,
+  InvigilatorLogin,
+  registerInvigilator,
+  registerContractor,
+  registerSeller,
   updateUser,
   deleteUser,
+  saveQRCode,
   fetchDataByQRCode,
 } = require("../Controller/controller");
 
-router.get("/verify", verifyUser);
 router.get("/fetchdata/:qrcode", fetchDataByQRCode);
-router.get("/login", loginUser);
-router.post("/register", registerUser);
-router.put("/update", updateUser);
+router.post("/invigilatorlogin", InvigilatorLogin);
+router.post("/registercontractor", registerContractor);
+router.post("/registerseller", registerSeller);
+router.post("/registerinvigilator", registerInvigilator);
+router.put("/update", updateUser); 
 router.delete("/delete", deleteUser);
+router.post("/saveqrcode", saveQRCode);
 
 module.exports = router;
+
+

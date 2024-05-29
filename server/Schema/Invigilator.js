@@ -1,14 +1,11 @@
 const mongoose = require("mongoose");
 
 const model = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
   },
-  gender: {
+  lastName: {
     type: String,
-  },
-  mobile: {
-    type: Number,
   },
   email: {
     type: String,
@@ -16,6 +13,12 @@ const model = new mongoose.Schema({
   password: {
     type: String,
   },
+  designation: {
+    type: String,
+  },
+  profilePic: {
+    type: String,
+  },
 });
 
-module.exports = mongoose.model("Info", model);
+module.exports = mongoose.model("Invigilator", model);

@@ -26,7 +26,7 @@ export default function Wabcamp() {
   };
 
   const handleError = (err) => {
-    console.error(err);
+    console.log(err);
   };
 
   const fetchData = async (id) => {
@@ -36,7 +36,7 @@ export default function Wabcamp() {
       );
       console.log('xxxxxxx',response)
       if (response.data) {
-        setFetchedData(response.data.user); 
+        setFetchedData(response.data.user);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -64,7 +64,7 @@ export default function Wabcamp() {
       >
         <div>
           <img
-            src={Logo}
+            src={Logo}  
             style={{
               height: "80px",
               width: "80px",
@@ -157,3 +157,5 @@ export default function Wabcamp() {
     </div>
   );
 }
+
+

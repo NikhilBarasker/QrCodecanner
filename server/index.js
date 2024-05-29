@@ -8,14 +8,14 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from this origin
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Specify allowed HTTP methods
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
 );
 
-// Connect to the database
 connectDB();
+app.use(express.json());
 
 const routes = require("./Routes/routes");
 
