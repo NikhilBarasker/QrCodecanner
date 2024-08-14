@@ -539,10 +539,8 @@ export default function Wabcamp() {
   const [fetchedData, setFetchedData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [qrcode, setQrCode] = useState("");
-  const [scanning, setScanning] = useState(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [rearCameraId, setRearCameraId] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -550,30 +548,9 @@ export default function Wabcamp() {
   };
 
   useEffect(() => {
-    // Function to get available video devices
-    const getVideoDevices = async () => {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
-      const rearCamera = videoDevices.find(
-        (device) =>
-          device.label.toLowerCase().includes("back") ||
-          device.label.toLowerCase().includes("rear")
-      );
-      if (rearCamera) {
-        setRearCameraId(rearCamera.deviceId);
-      }
-    };
-
-    getVideoDevices();
-
-    if (scanning) {
+    if (isScanning) {
       const constraints = {
-        video: {
-          deviceId: rearCameraId ? { exact: rearCameraId } : undefined,
-          facingMode: "environment",
-        },
+        video: { facingMode: "environment" }, // Request rear camera
       };
 
       navigator.mediaDevices
@@ -582,7 +559,7 @@ export default function Wabcamp() {
           if (videoRef.current) {
             videoRef.current.srcObject = mediaStream;
             videoRef.current.play();
-            requestAnimationFrame(scanQRCode);
+            requestAnimationFrame(scanQRCode); // Start scanning
           }
         })
         .catch((err) => {
@@ -596,7 +573,7 @@ export default function Wabcamp() {
         videoRef.current.srcObject = null;
       }
     }
-  }, [scanning, rearCameraId]);
+  }, [isScanning]);
 
   const scanQRCode = () => {
     if (videoRef.current && canvasRef.current) {
@@ -625,10 +602,10 @@ export default function Wabcamp() {
 
         if (code) {
           setScannedValue(code.data);
-          fetchData(code.data);
-          setIsScanning(false);
+          fetchData(code.data); // Fetch data after scanning
+          setIsScanning(false); // Stop scanning
         } else {
-          requestAnimationFrame(scanQRCode);
+          requestAnimationFrame(scanQRCode); // Keep scanning if QR code not found
         }
       }
     }
@@ -657,7 +634,7 @@ export default function Wabcamp() {
   };
 
   const navigateBack = () => {
-    setFetchedData(false);
+    setFetchedData(null); // Reset fetched data
   };
 
   return (
@@ -722,9 +699,6 @@ export default function Wabcamp() {
                   style={{ width: "300px", height: "300px" }}
                 />
                 <canvas ref={canvasRef} style={{ display: "none" }} />
-                {/* <button onClick={() => setScanning(false)}>
-                  Stop Scanning
-                </button> */}
               </div>
             )}
             <button onClick={() => setIsScanning(true)}>Start Scanning</button>
@@ -798,4 +772,5 @@ export default function Wabcamp() {
     </div>
   );
 }
+
 
