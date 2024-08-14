@@ -542,6 +542,7 @@ export default function Wabcamp() {
   const [scanning, setScanning] = useState(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [rearCameraId, setRearCameraId] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -549,9 +550,30 @@ export default function Wabcamp() {
   };
 
   useEffect(() => {
+    // Function to get available video devices
+    const getVideoDevices = async () => {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(
+        (device) => device.kind === "videoinput"
+      );
+      const rearCamera = videoDevices.find(
+        (device) =>
+          device.label.toLowerCase().includes("back") ||
+          device.label.toLowerCase().includes("rear")
+      );
+      if (rearCamera) {
+        setRearCameraId(rearCamera.deviceId);
+      }
+    };
+
+    getVideoDevices();
+
     if (scanning) {
       const constraints = {
-        video: { facingMode: "environment" },
+        video: {
+          deviceId: rearCameraId ? { exact: rearCameraId } : undefined,
+          facingMode: "environment",
+        },
       };
 
       navigator.mediaDevices
@@ -574,7 +596,7 @@ export default function Wabcamp() {
         videoRef.current.srcObject = null;
       }
     }
-  }, [scanning]);
+  }, [scanning, rearCameraId]);
 
   const scanQRCode = () => {
     if (videoRef.current && canvasRef.current) {
@@ -776,3 +798,4 @@ export default function Wabcamp() {
     </div>
   );
 }
+
