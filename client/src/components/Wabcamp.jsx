@@ -700,9 +700,9 @@ export default function Wabcamp() {
                   style={{ width: "300px", height: "300px" }}
                 />
                 <canvas ref={canvasRef} style={{ display: "none" }} />
-                <button onClick={() => setScanning(false)}>
+                {/* <button onClick={() => setScanning(false)}>
                   Stop Scanning
-                </button>
+                </button> */}
               </div>
             )}
             <button onClick={() => setIsScanning(true)}>Start Scanning</button>
