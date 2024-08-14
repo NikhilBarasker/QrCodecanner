@@ -83,6 +83,14 @@ export default function Wabcamp() {
     setQrCode(e.target.value);
   };
 
+  const handleInputClick = () => {
+    if (qrcode) {
+      fetchData(qrcode);
+    } else {
+      alert("Please enter a QR code.");
+    }
+  };
+
   const navigateBack = () => {
     setFetchedData(null);
   };
