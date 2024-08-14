@@ -156,7 +156,7 @@ export default function Wabcamp() {
                 }}
                 onError={handleError}
                 onScan={handleScan}
-                facingMode="environment"
+                facingMode="environment" // Ensure this is properly supported
               />
             )}
             {/* <button
@@ -175,7 +175,9 @@ export default function Wabcamp() {
               Click
             </button> */}
             <div>
-              <button onClick={() => setIsScanning(true)}>Start Scanning</button>
+              <button onClick={() => setIsScanning(true)}>
+                Start Scanning
+              </button>
               {scanning && (
                 <div>
                   <video
