@@ -20,27 +20,27 @@ export default function Wabcamp() {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (scanning) {
-      const constraints = {
-        video: { facingMode: { ideal: "environment" } },
-      };
+ useEffect(() => {
+   if (scanning) {
+     const constraints = {
+       video: { facingMode: "environment" }, // Ensures the back camera is used
+     };
 
-      navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((mediaStream) => {
-          setStream(mediaStream);
-          const video = document.getElementById("video");
-          if (video) {
-            video.srcObject = mediaStream;
-            video.play();
-          }
-        })
-        .catch((err) => {
-          console.error("Error accessing camera: ", err);
-        });
-    }
-  }, [scanning]);
+     navigator.mediaDevices
+       .getUserMedia(constraints)
+       .then((mediaStream) => {
+         setStream(mediaStream);
+         const video = document.getElementById("video");
+         if (video) {
+           video.srcObject = mediaStream;
+           video.play();
+         }
+       })
+       .catch((err) => {
+         console.error("Error accessing camera: ", err);
+       });
+   }
+ }, [scanning]);
 
   const stopScanning = () => {
     if (stream) {
