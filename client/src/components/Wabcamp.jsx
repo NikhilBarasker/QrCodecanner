@@ -124,6 +124,7 @@ export default function Wabcamp() {
                 }}
                 onError={handleError}
                 onScan={handleScan}
+                facingMode="environment"
               />
             )}
             <button
