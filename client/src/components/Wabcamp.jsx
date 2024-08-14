@@ -31,10 +31,11 @@ export default function Wabcamp() {
 
   const fetchData = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/fetchdata/${id}`
+      const response = await axios.post(
+        `https://railway-qbx4.onrender.com/vendor/fetchVendorDataByQR`,
+        { qrcode: id }
       );
-      console.log('xxxxxxx',response)
+      console.log("xxxxxxx", response);
       if (response.data) {
         setFetchedData(response.data.user);
       }
@@ -64,7 +65,7 @@ export default function Wabcamp() {
       >
         <div>
           <img
-            src={Logo}  
+            src={Logo}
             style={{
               height: "80px",
               width: "80px",
@@ -150,12 +151,272 @@ export default function Wabcamp() {
             }}
           >
             <h3>Fetched Data:</h3>
-            <pre>{JSON.stringify(fetchedData, null, 2)}</pre>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+              }}
+            >
+              <tbody className="mb-[50rem]">
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    First Name:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.fname}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Middle Name:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.mname}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Last Name:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.lname}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Date of Birth:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {new Date(fetchedData.dob).toLocaleDateString()}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Mobile:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.mobile}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Aadhar:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.aadhar}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    QR Code:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.qrcode}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Location of Stall:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {fetchedData.locationOfStall}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Profile Picture:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    <img
+                      src={fetchedData.profilePic}
+                      alt="Profile"
+                      style={{ maxHeight: "100px", borderRadius: "10px" }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Aadhar Card Image:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    <a
+                      href={fetchedData.aadharCardImg}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Document
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Police Verification Document:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    <a
+                      href={fetchedData.policeVarificationDocument}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Document
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Medical Validity Document:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    <a
+                      href={fetchedData.madicalValidityDocument}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Document
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Start Date:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {new Date(fetchedData.startDate).toLocaleDateString()}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    End Date:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {new Date(fetchedData.endDate).toLocaleDateString()}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Police Verification Validity:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {`${new Date(
+                      fetchedData.policeVarificationDateFrom
+                    ).toLocaleDateString()} - ${new Date(
+                      fetchedData.policeVarificationDateTo
+                    ).toLocaleDateString()}`}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      fontWeight: "bold",
+                      padding: "8px",
+                      border: "1px solid lightgray",
+                    }}
+                  >
+                    Medical Validity:
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                    {`${new Date(
+                      fetchedData.medicalValidityDateFrom
+                    ).toLocaleDateString()} - ${new Date(
+                      fetchedData.medicalValidityDateTo
+                    ).toLocaleDateString()}`}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         )}
       </div>
     </div>
   );
 }
-
-

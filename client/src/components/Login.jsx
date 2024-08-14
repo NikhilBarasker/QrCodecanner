@@ -16,18 +16,22 @@ function Login() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const handleClick = () => {
+     navigate("/wabcamp");
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-    console.log(formData)
-    try {
-      const response = await axios.post("http://localhost:3000/invigilatorlogin",formData);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      navigate("/wabcamp");
-    } catch (error) {
-      alert("One among email or password is invalid");
-      console.error("Error:", error);
-    }
+    // e.preventDefault();
+    // console.log(formData)
+    // try {
+    //   const response = await axios.post("http://localhost:3000/invigilatorlogin",formData);
+    //   localStorage.setItem("user", JSON.stringify(response.data.user));
+     
+    // } catch (error) {
+    //   alert("One among email or password is invalid");
+    //   console.error("Error:", error);
+    // }
+    //  navigate("/wabcamp");
   };
 
   return (
@@ -69,6 +73,7 @@ function Login() {
             <div className="!mt-10">
               <button
                 type="submit"
+                onClick={handleClick}
                 className="w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
               >
                 Log in
