@@ -230,9 +230,129 @@ export default function Wabcamp() {
             }}
           >
             <h3>Fetched Data:</h3>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <tbody className="mb-[50rem]">{/* Add table rows here */}</tbody>
-            </table>
+            <tbody className="mb-[50rem]">
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  First Name:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.fname}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Middle Name:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.mname}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Last Name:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.lname}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Date of Birth:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {new Date(fetchedData.dob).toLocaleDateString()}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Mobile:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.mobile}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Category:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.category}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Email:
+                </td>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.email}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ padding: "8px", border: "1px solid lightgray" }}>
+                  {fetchedData.policeVarificationDateFrom &&
+                  fetchedData.policeVarificationDateTo
+                    ? `${new Date(
+                        fetchedData.policeVarificationDateFrom
+                      ).toLocaleDateString()} - ${new Date(
+                        fetchedData.policeVarificationDateTo
+                      ).toLocaleDateString()}`
+                    : "Not available"}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    fontWeight: "bold",
+                    padding: "8px",
+                    border: "1px solid lightgray",
+                  }}
+                >
+                  Medical Validity:
+                </td>
+              </tr>
+            </tbody>
             <button
               className="cursor-pointer transition-all bg-blue-500 text-white p-2 rounded hover:bg-blue-800"
               onClick={navigateBack}
