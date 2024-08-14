@@ -15,7 +15,7 @@ export default function Footer() {
         height: '45px',
         lineHeight: '45px',
     }}>
-     &copy; Designed and Developed by <a href="">Royal's Webtech</a>
+     &copy; Designed and Developed by <a href="">Royals Webtech</a>
     </div>
   )
 }
