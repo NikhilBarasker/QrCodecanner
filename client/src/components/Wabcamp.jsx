@@ -73,13 +73,11 @@ export default function Wabcamp() {
           canvasRef.current.height
         );
 
-        if (code) {
+        
           setScannedValue(code.data);
           fetchData(code.data); // Fetch data after scanning
           setIsScanning(false); // Stop scanning
-        } else {
-          requestAnimationFrame(scanQRCode); // Keep scanning if QR code not found
-        }
+        
       }
     }
   };
