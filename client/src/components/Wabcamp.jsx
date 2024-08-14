@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Logo from "../assets/Logo.png";
 import camera from "../assets/camera.png";
 import { useNavigate } from "react-router-dom";
@@ -12,10 +12,42 @@ export default function Wabcamp() {
   const [fetchedData, setFetchedData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [qrcode, setQrCode] = useState("");
+  const [scanning, setScanning] = useState(false);
+  const [stream, setStream] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/");
+  };
+
+  useEffect(() => {
+    if (scanning) {
+      const constraints = {
+        video: { facingMode: { ideal: "environment" } },
+      };
+
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((mediaStream) => {
+          setStream(mediaStream);
+          const video = document.getElementById("video");
+          if (video) {
+            video.srcObject = mediaStream;
+            video.play();
+          }
+        })
+        .catch((err) => {
+          console.error("Error accessing camera: ", err);
+        });
+    }
+  }, [scanning]);
+
+  const stopScanning = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+    setScanning(false);
   };
 
   const handleScan = (id) => {
@@ -173,6 +205,20 @@ export default function Wabcamp() {
                       className="w-full max-w-[160px] bg-white pl-2 text-base font-semibold outline-0"
                       placeholder="Enter QR Code"
                     />
+                    <div>
+                      <button onClick={() => setScanning(true)}>
+                        Start Scanning
+                      </button>
+                      {scanning && (
+                        <div>
+                          <video
+                            id="video"
+                            style={{ width: "300px", height: "300px" }}
+                          />
+                          <button onClick={stopScanning}>Stop Scanning</button>
+                        </div>
+                      )}
+                    </div>
                     <button
                       onClick={handleInputClick}
                       className="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors"

@@ -22,8 +22,16 @@ function Login() {
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
-    if(formData.email === "admin")
-      navigate("/wabcamp");
+    // console.log(formData)
+    // try {
+    //   const response = await axios.post("http://localhost:3000/invigilatorlogin",formData);
+    //   localStorage.setItem("user", JSON.stringify(response.data.user));
+     
+    // } catch (error) {
+    //   alert("One among email or password is invalid");
+    //   console.error("Error:", error);
+    // }
+     
   };
 
   return (
