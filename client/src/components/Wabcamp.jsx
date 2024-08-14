@@ -175,7 +175,7 @@ export default function Wabcamp() {
               Click
             </button> */}
             <div>
-              <button onClick={() => setIsScanning(true)}>Start Scanning</button>
+              <button onClick={() => setScanning(true)}>Start Scanning</button>
               {scanning && (
                 <div>
                   <video
