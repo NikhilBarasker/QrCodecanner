@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../assets/Logo.png";
 import camera from "../assets/camera.png";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ export default function Wabcamp() {
   const [fetchedData, setFetchedData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [qrcode, setQrCode] = useState("");
-  const [scanning, setScanning] = useState(false);
   const [stream, setStream] = useState(null);
 
   const handleLogout = () => {
@@ -21,7 +20,7 @@ export default function Wabcamp() {
   };
 
   useEffect(() => {
-    if (scanning) {
+    if (isScanning) {
       const constraints = {
         video: { facingMode: { ideal: "environment" } },
       };
@@ -40,21 +39,21 @@ export default function Wabcamp() {
           console.error("Error accessing camera: ", err);
         });
     }
-  }, [scanning]);
+  }, [isScanning]);
 
   const stopScanning = () => {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
-    setScanning(false);
+    setIsScanning(false);
   };
 
   const handleScan = (id) => {
     if (id) {
       setScannedValue(id.text);
       fetchData(id.text);
-      setIsScanning(false);
+      stopScanning(); // Stop scanning after a successful scan
     }
   };
 
@@ -63,13 +62,11 @@ export default function Wabcamp() {
   };
 
   const fetchData = async (id) => {
-    console.log('hiiiiiii')
     try {
       const response = await axios.post(
         `https://railway-qbx4.onrender.com/vendor/fetchVendorDataByQR`,
         { qrcode: id }
       );
-      console.log("xxxxxxx", response);
       if (response.data) {
         setFetchedData(response.data.user);
       }
@@ -78,9 +75,8 @@ export default function Wabcamp() {
     }
   };
 
-  const handleInputClick = () => {
-    console.log("QrCode: ", qrcode);
-    fetchData(qrcode);
+  const handleClick = () => {
+    setIsScanning(true); // Start scanning when the Click button is pressed
   };
 
   const handleQrCodeValue = (e) => {
@@ -88,8 +84,8 @@ export default function Wabcamp() {
   };
 
   const navigateBack = () => {
-    setFetchedData(false)
-  }
+    setFetchedData(null);
+  };
 
   return (
     <div
@@ -170,7 +166,7 @@ export default function Wabcamp() {
                 alignItems: "center",
                 marginLeft: "100px",
               }}
-              onClick={() => setIsScanning(true)}
+              onClick={handleClick} // Modified handler
             >
               Click
             </button>
@@ -205,20 +201,6 @@ export default function Wabcamp() {
                       className="w-full max-w-[160px] bg-white pl-2 text-base font-semibold outline-0"
                       placeholder="Enter QR Code"
                     />
-                    <div>
-                      <button onClick={() => setScanning(true)}>
-                        Start Scanning
-                      </button>
-                      {scanning && (
-                        <div>
-                          <video
-                            id="video"
-                            style={{ width: "300px", height: "300px" }}
-                          />
-                          <button onClick={stopScanning}>Stop Scanning</button>
-                        </div>
-                      )}
-                    </div>
                     <button
                       onClick={handleInputClick}
                       className="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors"
@@ -268,20 +250,6 @@ export default function Wabcamp() {
                       border: "1px solid lightgray",
                     }}
                   >
-                    Middle Name:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.mname}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
                     Last Name:
                   </td>
                   <td style={{ padding: "8px", border: "1px solid lightgray" }}>
@@ -296,10 +264,10 @@ export default function Wabcamp() {
                       border: "1px solid lightgray",
                     }}
                   >
-                    Date of Birth:
+                    Phone Number:
                   </td>
                   <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {new Date(fetchedData.dob).toLocaleDateString()}
+                    {fetchedData.phone}
                   </td>
                 </tr>
                 <tr>
@@ -310,10 +278,10 @@ export default function Wabcamp() {
                       border: "1px solid lightgray",
                     }}
                   >
-                    Mobile:
+                    Email:
                   </td>
                   <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.mobile}
+                    {fetchedData.email}
                   </td>
                 </tr>
                 <tr>
@@ -324,195 +292,25 @@ export default function Wabcamp() {
                       border: "1px solid lightgray",
                     }}
                   >
-                    Aadhar:
+                    Company:
                   </td>
                   <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.aadhar}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    QR Code:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.qrcode}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Location of Stall:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.locationOfStall}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Profile Picture:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    <img
-                      src={fetchedData.profilePic}
-                      alt="Profile"
-                      style={{ maxHeight: "100px", borderRadius: "10px" }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Aadhar Card Image:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    <a
-                      href={fetchedData.aadharCardImg}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Document
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Police Verification Document:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    <a
-                      href={fetchedData.policeVarificationDocument}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Document
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Medical Validity Document:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    <a
-                      href={fetchedData.madicalValidityDocument}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Document
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Start Date:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {new Date(fetchedData.startDate).toLocaleDateString()}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    End Date:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {new Date(fetchedData.endDate).toLocaleDateString()}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Police Verification Validity:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.policeVarificationDateFrom &&
-                    fetchedData.policeVarificationDateTo
-                      ? `${new Date(
-                          fetchedData.policeVarificationDateFrom
-                        ).toLocaleDateString()} - ${new Date(
-                          fetchedData.policeVarificationDateTo
-                        ).toLocaleDateString()}`
-                      : "Not available"}
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      fontWeight: "bold",
-                      padding: "8px",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    Medical Validity:
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {fetchedData.medicalValidityDateFrom &&
-                    fetchedData.medicalValidityDateTo
-                      ? `${new Date(
-                          fetchedData.medicalValidityDateFrom
-                        ).toLocaleDateString()} - ${new Date(
-                          fetchedData.medicalValidityDateTo
-                        ).toLocaleDateString()}`
-                      : "Not available"}
+                    {fetchedData.company}
                   </td>
                 </tr>
               </tbody>
             </table>
             <button
-              className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-border-blue-600
-border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+              style={{
+                height: "40px",
+                width: "150px",
+                borderRadius: "20px",
+                backgroundColor: "rgb(59 130 246 / 0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "20px auto",
+              }}
               onClick={navigateBack}
             >
               Back
