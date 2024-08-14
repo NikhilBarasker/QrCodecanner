@@ -11,6 +11,7 @@ export default function Wabcamp() {
   const [scannedValue, setScannedValue] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
+  const [qrcode, setQrCode] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -30,6 +31,7 @@ export default function Wabcamp() {
   };
 
   const fetchData = async (id) => {
+    console.log('hiiiiiii')
     try {
       const response = await axios.post(
         `https://railway-qbx4.onrender.com/vendor/fetchVendorDataByQR`,
@@ -43,6 +45,19 @@ export default function Wabcamp() {
       console.error("Error fetching data:", error);
     }
   };
+
+  const handleInputClick = () => {
+    console.log("QrCode: ", qrcode);
+    fetchData(qrcode);
+  };
+
+  const handleQrCodeValue = (e) => {
+    setQrCode(e.target.value);
+  };
+
+  const navigateBack = () => {
+    setFetchedData(false)
+  }
 
   return (
     <div
@@ -64,13 +79,7 @@ export default function Wabcamp() {
         }}
       >
         <div>
-          <img
-            src={Logo}
-            style={{
-              height: "80px",
-              width: "80px",
-            }}
-          />
+          <img src={Logo} style={{ height: "80px", width: "80px" }} />
         </div>
         <div>
           <GrLogout
@@ -92,52 +101,89 @@ export default function Wabcamp() {
           alignItems: "center",
           flex: "1",
           padding: "20px",
+          marginBottom: "150px",
         }}
       >
-        <img
-          src={camera}
-          style={{
-            height: "80px",
-            marginBottom: "20px",
-          }}
-        />
-        {isScanning && (
-          <QrReader
-            delay={300}
-            style={{
-              width: "100%",
-              maxWidth: "300px",
-              marginBottom: "20px",
-            }}
-            onError={handleError}
-            onScan={handleScan}
-          />
+        {!fetchedData && (
+          <div>
+            <img
+              src={camera}
+              style={{
+                height: "80px",
+                marginBottom: "20px",
+                marginLeft: "120px",
+              }}
+            />
+            {isScanning && (
+              <QrReader
+                delay={300}
+                style={{
+                  width: "100%",
+                  maxWidth: "300px",
+                  marginBottom: "20px",
+                }}
+                onError={handleError}
+                onScan={handleScan}
+              />
+            )}
+            <button
+              style={{
+                height: "40px",
+                width: "150px",
+                borderRadius: "20px",
+                backgroundColor: "rgb(59 130 246 / 0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginLeft: "100px",
+              }}
+              onClick={() => setIsScanning(true)}
+            >
+              Click
+            </button>
+            <p
+              style={{
+                width: "100%",
+                textAlign: "center",
+                fontWeight: "bold",
+                padding: "10px 20px",
+                margin: "0",
+              }}
+            >
+              Please click the button to access the camera to scan the QR code
+            </p>
+            <div>
+              <div className="flex items-center justify-center p-5">
+                <div className="rounded-lg bg-gray-200 p-5">
+                  <div className="flex">
+                    <div className="flex w-10 items-center justify-center rounded-tl-lg rounded-bl-lg border-r border-gray-200 bg-white p-5">
+                      <svg
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                        className="pointer-events-none absolute w-5 fill-gray-500 transition"
+                      >
+                        <path d="M16.72 17.78a.75.75 0 1 0 1.06-1.06l-1.06 1.06ZM9 14.5A5.5 5.5 0 0 1 3.5 9H2a7 7 0 0 0 7 7v-1.5ZM3.5 9A5.5 5.5 0 0 1 9 3.5V2a7 7 0 0 0-7 7h1.5ZM9 3.5A5.5 5.5 0 0 1 14.5 9H16a7 7 0 0 0-7-7v1.5Zm3.89 10.45 3.83 3.83 1.06-1.06-3.83-3.83-1.06 1.06ZM14.5 9a5.48 5.48 0 0 1-1.61 3.89l1.06 1.06A6.98 6.98 0 0 0 16 9h-1.5Zm-1.61 3.89A5.48 5.48 0 0 1 9 14.5V16a6.98 6.98 0 0 0 4.95-2.05l-1.06-1.06Z"></path>
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      value={qrcode}
+                      onChange={handleQrCodeValue}
+                      className="w-full max-w-[160px] bg-white pl-2 text-base font-semibold outline-0"
+                      placeholder="Enter QR Code"
+                    />
+                    <button
+                      onClick={handleInputClick}
+                      className="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
-        <button
-          style={{
-            height: "40px",
-            width: "150px",
-            borderRadius: "20px",
-            backgroundColor: "rgb(59 130 246 / 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onClick={() => setIsScanning(true)}
-        >
-          Click
-        </button>
-        <p
-          style={{
-            width: "100%",
-            textAlign: "center",
-            fontWeight: "bold",
-            padding: "10px 20px",
-            margin: "0",
-          }}
-        >
-          Please click the button to access the camera to scan the QR code
-        </p>
         {fetchedData && (
           <div
             style={{
@@ -151,12 +197,7 @@ export default function Wabcamp() {
             }}
           >
             <h3>Fetched Data:</h3>
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-              }}
-            >
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <tbody className="mb-[50rem]">
                 <tr>
                   <td
@@ -387,11 +428,14 @@ export default function Wabcamp() {
                     Police Verification Validity:
                   </td>
                   <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {`${new Date(
-                      fetchedData.policeVarificationDateFrom
-                    ).toLocaleDateString()} - ${new Date(
-                      fetchedData.policeVarificationDateTo
-                    ).toLocaleDateString()}`}
+                    {fetchedData.policeVarificationDateFrom &&
+                    fetchedData.policeVarificationDateTo
+                      ? `${new Date(
+                          fetchedData.policeVarificationDateFrom
+                        ).toLocaleDateString()} - ${new Date(
+                          fetchedData.policeVarificationDateTo
+                        ).toLocaleDateString()}`
+                      : "Not available"}
                   </td>
                 </tr>
                 <tr>
@@ -405,15 +449,27 @@ export default function Wabcamp() {
                     Medical Validity:
                   </td>
                   <td style={{ padding: "8px", border: "1px solid lightgray" }}>
-                    {`${new Date(
-                      fetchedData.medicalValidityDateFrom
-                    ).toLocaleDateString()} - ${new Date(
-                      fetchedData.medicalValidityDateTo
-                    ).toLocaleDateString()}`}
+                    {fetchedData.medicalValidityDateFrom &&
+                    fetchedData.medicalValidityDateTo
+                      ? `${new Date(
+                          fetchedData.medicalValidityDateFrom
+                        ).toLocaleDateString()} - ${new Date(
+                          fetchedData.medicalValidityDateTo
+                        ).toLocaleDateString()}`
+                      : "Not available"}
                   </td>
                 </tr>
               </tbody>
             </table>
+            <button
+              className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
+border-blue-600
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+              onClick={navigateBack}
+            >
+              Back
+            </button>
           </div>
         )}
       </div>
