@@ -159,7 +159,7 @@ export default function Wabcamp() {
                 facingMode="environment"
               />
             )}
-            <button
+            {/* <button
               style={{
                 height: "40px",
                 width: "150px",
@@ -173,7 +173,19 @@ export default function Wabcamp() {
               onClick={() => setIsScanning(true)}
             >
               Click
-            </button>
+            </button> */}
+            <div>
+              <button onClick={() => setScanning(true)}>Start Scanning</button>
+              {scanning && (
+                <div>
+                  <video
+                    id="video"
+                    style={{ width: "300px", height: "300px" }}
+                  />
+                  <button onClick={stopScanning}>Stop Scanning</button>
+                </div>
+              )}
+            </div>
             <p
               style={{
                 width: "100%",
@@ -205,20 +217,7 @@ export default function Wabcamp() {
                       className="w-full max-w-[160px] bg-white pl-2 text-base font-semibold outline-0"
                       placeholder="Enter QR Code"
                     />
-                    <div>
-                      <button onClick={() => setScanning(true)}>
-                        Start Scanning
-                      </button>
-                      {scanning && (
-                        <div>
-                          <video
-                            id="video"
-                            style={{ width: "300px", height: "300px" }}
-                          />
-                          <button onClick={stopScanning}>Stop Scanning</button>
-                        </div>
-                      )}
-                    </div>
+
                     <button
                       onClick={handleInputClick}
                       className="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors"
